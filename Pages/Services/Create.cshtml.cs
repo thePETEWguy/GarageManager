@@ -25,7 +25,7 @@ namespace GarageManager.Pages.Services
         }
 
         [BindProperty]
-        public Category Category { get; set; }
+        public Service Service { get; set; }
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -36,7 +36,7 @@ namespace GarageManager.Pages.Services
                 return Page();
             }
 
-            _context.Category.Add(Category);
+            _context.Service.Add(Service);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

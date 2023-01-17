@@ -19,23 +19,23 @@ namespace GarageManager.Pages.Services
             _context = context;
         }
 
-      public Category Category { get; set; }
+      public Service Service { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Category == null)
+            if (id == null || _context.Service == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
-            if (category == null)
+            var Service = await _context.Service.FirstOrDefaultAsync(m => m.ID == id);
+            if (Service == null)
             {
                 return NotFound();
             }
             else 
             {
-                Category = category;
+                Service = Service;
             }
             return Page();
         }

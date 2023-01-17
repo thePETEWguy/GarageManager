@@ -20,40 +20,40 @@ namespace GarageManager.Pages.Services
         }
 
         [BindProperty]
-      public Category Category { get; set; }
+      public Service Service { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Category == null)
+            if (id == null || _context.Service == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
+            var Service = await _context.Service.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (category == null)
+            if (Service == null)
             {
                 return NotFound();
             }
             else 
             {
-                Category = category;
+                Service = Service;
             }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.Category == null)
+            if (id == null || _context.Service == null)
             {
                 return NotFound();
             }
-            var category = await _context.Category.FindAsync(id);
+            var Service = await _context.Service.FindAsync(id);
 
-            if (category != null)
+            if (Service != null)
             {
-                Category = category;
-                _context.Category.Remove(Category);
+                Service = Service;
+                _context.Service.Remove(Service);
                 await _context.SaveChangesAsync();
             }
 

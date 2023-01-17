@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Services</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -14,16 +14,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Category[0].CategoryName)
+                @Html.DisplayNameFor(model => model.Service[0].ServiceName)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Category) {
+@foreach (var item in Model.Service) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
+                @Html.DisplayFor(modelItem => item.ServiceName)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |

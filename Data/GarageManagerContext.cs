@@ -18,6 +18,6 @@ namespace GarageManager.Data
 
         public DbSet<GarageManager.Models.Mechanic> Mechanic { get; set; }
 
-        public DbSet<GarageManager.Models.Category> Category { get; set; }
+        public DbSet<GarageManager.Models.Service> Service { get; set; }
     }
 }

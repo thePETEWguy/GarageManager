@@ -21,21 +21,21 @@ namespace GarageManager.Pages.Services
         }
 
         [BindProperty]
-        public Category Category { get; set; } = default!;
+        public Service Service { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Category == null)
+            if (id == null || _context.Service == null)
             {
                 return NotFound();
             }
 
-            var category =  await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
-            if (category == null)
+            var Service =  await _context.Service.FirstOrDefaultAsync(m => m.ID == id);
+            if (Service == null)
             {
                 return NotFound();
             }
-            Category = category;
+            Service = Service;
             return Page();
         }
 
@@ -48,7 +48,7 @@ namespace GarageManager.Pages.Services
                 return Page();
             }
 
-            _context.Attach(Category).State = EntityState.Modified;
+            _context.Attach(Service).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace GarageManager.Pages.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(Category.ID))
+                if (!ServiceExists(Service.ID))
                 {
                     return NotFound();
                 }
@@ -69,9 +69,9 @@ namespace GarageManager.Pages.Services
             return RedirectToPage("./Index");
         }
 
-        private bool CategoryExists(int id)
+        private bool ServiceExists(int id)
         {
-          return _context.Category.Any(e => e.ID == id);
+          return _context.Service.Any(e => e.ID == id);
         }
     }
 }

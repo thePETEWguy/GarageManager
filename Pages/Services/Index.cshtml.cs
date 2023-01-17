@@ -19,13 +19,13 @@ namespace GarageManager.Pages.Services
             _context = context;
         }
 
-        public IList<Category> Category { get;set; } = default!;
+        public IList<Service> Service { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            if (_context.Category != null)
+            if (_context.Service != null)
             {
-                Category = await _context.Category.ToListAsync();
+                Service = await _context.Service.ToListAsync();
             }
         }
     }

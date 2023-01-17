@@ -58,7 +58,7 @@ namespace GarageManager.Migrations
                     b.ToTable("Car");
                 });
 
-            modelBuilder.Entity("GarageManager.Models.Category", b =>
+            modelBuilder.Entity("GarageManager.Models.CarService", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -66,13 +66,19 @@ namespace GarageManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CarID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceID")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Category");
+                    b.HasIndex("CarID");
+
+                    b.HasIndex("ServiceID");
+
+                    b.ToTable("CarService");
                 });
 
             modelBuilder.Entity("GarageManager.Models.Mechanic", b =>
@@ -92,7 +98,7 @@ namespace GarageManager.Migrations
                     b.ToTable("Mechanic");
                 });
 
-            modelBuilder.Entity("GarageManager.Models.ServiceCategory", b =>
+            modelBuilder.Entity("GarageManager.Models.Service", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -100,19 +106,13 @@ namespace GarageManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int>("CarID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
+                    b.Property<string>("ServiceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CarID");
-
-                    b.HasIndex("CategoryID");
-
-                    b.ToTable("ServiceCategory");
+                    b.ToTable("Service");
                 });
 
             modelBuilder.Entity("GarageManager.Models.Car", b =>
@@ -126,7 +126,7 @@ namespace GarageManager.Migrations
                     b.Navigation("Mechanic");
                 });
 
-            modelBuilder.Entity("GarageManager.Models.ServiceCategory", b =>
+            modelBuilder.Entity("GarageManager.Models.CarService", b =>
                 {
                     b.HasOne("GarageManager.Models.Car", "car")
                         .WithMany("ServiceCategories")
@@ -134,13 +134,13 @@ namespace GarageManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GarageManager.Models.Category", "Category")
+                    b.HasOne("GarageManager.Models.Service", "Service")
                         .WithMany("ServiceCategories")
-                        .HasForeignKey("CategoryID")
+                        .HasForeignKey("ServiceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("Service");
 
                     b.Navigation("car");
                 });
@@ -150,14 +150,14 @@ namespace GarageManager.Migrations
                     b.Navigation("ServiceCategories");
                 });
 
-            modelBuilder.Entity("GarageManager.Models.Category", b =>
-                {
-                    b.Navigation("ServiceCategories");
-                });
-
             modelBuilder.Entity("GarageManager.Models.Mechanic", b =>
                 {
                     b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("GarageManager.Models.Service", b =>
+                {
+                    b.Navigation("ServiceCategories");
                 });
 #pragma warning restore 612, 618
         }

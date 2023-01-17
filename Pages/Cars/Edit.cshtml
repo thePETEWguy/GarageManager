@@ -1,0 +1,55 @@
+﻿@page
+@model GarageManager.Pages.Cars.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Car</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Car.ID" />
+            <div class="form-group">
+                <label asp-for="Car.ModelName" class="control-label"></label>
+                <input asp-for="Car.ModelName" class="form-control" />
+                <span asp-validation-for="Car.ModelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Car.LicensePlate" class="control-label"></label>
+                <input asp-for="Car.LicensePlate" class="form-control" />
+                <span asp-validation-for="Car.LicensePlate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Car.Owner" class="control-label"></label>
+                <input asp-for="Car.Owner" class="form-control" />
+                <span asp-validation-for="Car.Owner" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Car.ServicePrice" class="control-label"></label>
+                <input asp-for="Car.ServicePrice" class="form-control" />
+                <span asp-validation-for="Car.ServicePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Car.ServiceDate" class="control-label"></label>
+                <input asp-for="Car.ServiceDate" class="form-control" />
+                <span asp-validation-for="Car.ServiceDate" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

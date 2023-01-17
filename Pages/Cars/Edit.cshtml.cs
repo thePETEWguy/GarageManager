@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GarageManager.Data;
 using GarageManager.Models;
 
 namespace GarageManager.Pages.Cars
 {
-    public class EditModel : PageModel
+    public class EditModel : CarServicesPageModel
     {
         private readonly GarageManager.Data.GarageManagerContext _context;
 
@@ -30,44 +25,65 @@ namespace GarageManager.Pages.Cars
                 return NotFound();
             }
 
-            var car =  await _context.Car.FirstOrDefaultAsync(m => m.ID == id);
-            if (car == null)
+            Car = await _context.Car
+                 .Include(c => c.Mechanic)
+                 .Include(c => c.CarServices)
+                 .ThenInclude(c => c.Service)
+                 .AsNoTracking()
+                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Car == null)
             {
                 return NotFound();
             }
-            Car = car;
+
+            PopulateSelectedServices(_context, Car);
+
             ViewData["MechanicID"] = new SelectList(_context.Set<Mechanic>(), "ID", "MechanicName");
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id, string[] selectedServices)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Car).State = EntityState.Modified;
-
-            try
+            if (id == null)
             {
+                return NotFound();
+            }
+
+            var car = await _context.Car
+                .Include(i => i.Mechanic)
+                .Include(i => i.CarServices)
+                .ThenInclude(i => i.Service)
+                .FirstOrDefaultAsync(s => s.ID == id);
+
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            if (await TryUpdateModelAsync(
+                car,
+                "Car",
+                i => i.ModelName,
+                i => i.ServicePrice,
+                i => i.Owner,
+                i => i.ServiceDate,
+                i => i.Mechanic))
+            {
+                UpdateCarServices(_context, selectedServices, car);
                 await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CarExists(Car.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
+            UpdateCarServices(_context, selectedServices, car);
+            PopulateSelectedServices(_context, car);
+            return Page();
         }
 
         private bool CarExists(int id)

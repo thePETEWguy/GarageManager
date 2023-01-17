@@ -34,9 +34,6 @@
                 <span asp-validation-for="Car.ServicePrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-            <div class="form-group">
                 <label asp-for="Car.ServiceDate" class="control-label"></label>
                 <input asp-for="Car.ServiceDate" class="form-control" />
                 <span asp-validation-for="Car.ServiceDate" class="text-danger"></span>
@@ -46,6 +43,35 @@
                 <select asp-for="Car.MechanicID" class="form-control" asp-items="ViewBag.MechanicID">
                 </select>
                 <span asp-validation-for="Car.MechanicID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="table">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+
+                                foreach (var service in Model.SelectedServiceList)
+                                {
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                        @:</tr><tr>
+                                    }
+                                    @:<td>
+                                                   <input type="checkbox"
+                                                   name="selectedServices"
+                                                   value="@service.ServiceID"
+                                                   @(Html.Raw(service.Selected? "checked=\"checked\"" : "")) />
+                                    @service.ServiceID @: @service.Name
+                                    @:</td>
+                                }
+                                @: </tr>
+                              }
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

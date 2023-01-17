@@ -21,13 +21,32 @@ namespace GarageManager.Pages.Cars
 
         public IList<Car> Car { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public CarData CarData { get; set; }
+        public int CarID { get; set; }
+        public int ServiceID { get; set; }
+
+        public async Task OnGetAsync(int? id, int? serviceID)
         {
-            if (_context.Car != null)
+            CarData = new CarData
             {
-                Car = await _context.Car
-                    .Include(c => c.Mechanic)
-                    .ToListAsync();
+                Cars = await _context.Car
+                .Include(c => c.Mechanic)
+                .Include(c => c.CarServices).ThenInclude(c => c.Service)
+                .AsNoTracking()
+                .OrderBy(c => c.ModelName)
+                .ToListAsync(),
+                Services = await _context.Service
+                .AsNoTracking()
+                .OrderBy(s => s.ServiceName)
+                .ToListAsync()
+            };
+
+            if (id != null)
+            {
+                CarID = id.Value;
+                Car car = CarData.Cars
+                .Where(i => i.ID == id.Value).Single();
+                CarData.Services = car.CarServices.Select(s => s.Service);
             }
         }
     }

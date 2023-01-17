@@ -27,6 +27,6 @@ namespace GarageManager.Models
         public int MechanicID { get; set; }
         public Mechanic? Mechanic { get; set; } // navigation property
 
-        public ICollection<CarService>? ServiceCategories { get; set; }
+        public ICollection<CarService>? CarServices { get; set; }
     }
 }

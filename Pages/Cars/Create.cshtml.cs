@@ -11,7 +11,7 @@ using System.Security.Policy;
 
 namespace GarageManager.Pages.Cars
 {
-    public class CreateModel : PageModel
+    public class CreateModel : CarServicesPageModel
     {
         private readonly GarageManager.Data.GarageManagerContext _context;
 
@@ -23,23 +23,46 @@ namespace GarageManager.Pages.Cars
         public IActionResult OnGet()
         {
             ViewData["MechanicID"] = new SelectList(_context.Set<Mechanic>(), "ID", "MechanicName");
+
+            var car = new Car();
+            car.CarServices = new List<CarService>();
+
+            PopulateSelectedServices(_context, car);
+
             return Page();
         }
 
         [BindProperty]
         public Car Car { get; set; }
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedServices)
         {
-          if (!ModelState.IsValid)
+            var newCar = new Car();
+            if (selectedServices != null)
             {
-                return Page();
+                newCar.CarServices = new List<CarService>();
+                foreach (var service in selectedServices)
+                {
+                    var serviceToAdd = new CarService
+                    {
+                        ServiceID = int.Parse(service)
+                    };
+                    newCar.CarServices.Add(serviceToAdd);
+                }
             }
 
-            _context.Car.Add(Car);
+            newCar.ModelName = Car.ModelName;
+            newCar.LicensePlate = Car.LicensePlate;
+            newCar.ServicePrice = Car.ServicePrice;
+            newCar.Owner = Car.Owner;
+            newCar.ServiceDate = Car.ServiceDate;
+            newCar.MechanicID = Car.MechanicID;
+
+            _context.Car.Add(newCar);
             await _context.SaveChangesAsync();
+            PopulateSelectedServices(_context, newCar);
 
             return RedirectToPage("./Index");
         }

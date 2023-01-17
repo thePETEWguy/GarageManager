@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GarageManager.Data;
 using GarageManager.Models;
-using System.Security.Policy;
 
-namespace GarageManager.Pages.Cars
+namespace GarageManager.Pages.Services
 {
     public class CreateModel : PageModel
     {
@@ -22,12 +21,11 @@ namespace GarageManager.Pages.Cars
 
         public IActionResult OnGet()
         {
-            ViewData["MechanicID"] = new SelectList(_context.Set<Mechanic>(), "ID", "MechanicName");
             return Page();
         }
 
         [BindProperty]
-        public Car Car { get; set; }
+        public Category Category { get; set; }
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -38,7 +36,7 @@ namespace GarageManager.Pages.Cars
                 return Page();
             }
 
-            _context.Car.Add(Car);
+            _context.Category.Add(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

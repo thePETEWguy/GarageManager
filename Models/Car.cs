@@ -23,5 +23,10 @@ namespace GarageManager.Models
         [Display(Name = "Service Date")]
         [DataType(DataType.Date)]
         public DateTime ServiceDate { get; set; }
+
+        public int MechanicID { get; set; }
+        public Mechanic? Mechanic { get; set; } // navigation property
+
+        public ICollection<ServiceCategory>? ServiceCategories { get; set; }
     }
 }

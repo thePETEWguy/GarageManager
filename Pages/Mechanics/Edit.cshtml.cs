@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using GarageManager.Data;
 using GarageManager.Models;
 
-namespace GarageManager.Pages.Cars
+namespace GarageManager.Pages.Mechanics
 {
     public class EditModel : PageModel
     {
@@ -21,22 +21,21 @@ namespace GarageManager.Pages.Cars
         }
 
         [BindProperty]
-        public Car Car { get; set; } = default!;
+        public Mechanic Mechanic { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Car == null)
+            if (id == null || _context.Mechanic == null)
             {
                 return NotFound();
             }
 
-            var car =  await _context.Car.FirstOrDefaultAsync(m => m.ID == id);
-            if (car == null)
+            var mechanic =  await _context.Mechanic.FirstOrDefaultAsync(m => m.ID == id);
+            if (mechanic == null)
             {
                 return NotFound();
             }
-            Car = car;
-            ViewData["MechanicID"] = new SelectList(_context.Set<Mechanic>(), "ID", "MechanicName");
+            Mechanic = mechanic;
             return Page();
         }
 
@@ -49,7 +48,7 @@ namespace GarageManager.Pages.Cars
                 return Page();
             }
 
-            _context.Attach(Car).State = EntityState.Modified;
+            _context.Attach(Mechanic).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +56,7 @@ namespace GarageManager.Pages.Cars
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CarExists(Car.ID))
+                if (!MechanicExists(Mechanic.ID))
                 {
                     return NotFound();
                 }
@@ -70,9 +69,9 @@ namespace GarageManager.Pages.Cars
             return RedirectToPage("./Index");
         }
 
-        private bool CarExists(int id)
+        private bool MechanicExists(int id)
         {
-          return _context.Car.Any(e => e.ID == id);
+          return _context.Mechanic.Any(e => e.ID == id);
         }
     }
 }

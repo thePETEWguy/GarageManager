@@ -15,5 +15,9 @@ namespace GarageManager.Data
         }
 
         public DbSet<GarageManager.Models.Car> Car { get; set; } = default!;
+
+        public DbSet<GarageManager.Models.Mechanic> Mechanic { get; set; }
+
+        public DbSet<GarageManager.Models.Category> Category { get; set; }
     }
 }

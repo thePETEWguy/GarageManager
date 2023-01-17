@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GarageManager.Data;
 using GarageManager.Models;
 
-namespace GarageManager.Pages.Cars
+namespace GarageManager.Pages.Services
 {
     public class IndexModel : PageModel
     {
@@ -19,15 +19,13 @@ namespace GarageManager.Pages.Cars
             _context = context;
         }
 
-        public IList<Car> Car { get;set; } = default!;
+        public IList<Category> Category { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            if (_context.Car != null)
+            if (_context.Category != null)
             {
-                Car = await _context.Car
-                    .Include(c => c.Mechanic)
-                    .ToListAsync();
+                Category = await _context.Category.ToListAsync();
             }
         }
     }
